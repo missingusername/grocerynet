@@ -191,6 +191,10 @@ def main():
     labels = lb.fit_transform(labels)
     num_classes = len(lb.classes_)
 
+        # Save the LabelBinarizer
+    with open(os.path.join(output_path, 'label_binarizer.pkl'), 'wb') as f:
+        pickle.dump(lb, f)
+
     # Split data into training and testing sets
     tracker.start_task('train-test split')
     X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, random_state=args.randomstate)
@@ -225,7 +229,7 @@ def main():
 
     # optionally save the model
     if args.save:
-        model.save(os.path.join(output_path, 'tobacco_resnet50.h5'))
+        model.save(os.path.join(output_path, 'grocery_resnet50.keras'))
 
 if __name__ == '__main__':
     main()
