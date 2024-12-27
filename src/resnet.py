@@ -135,7 +135,7 @@ def train_model(model, X_train, y_train, datagen):
     return model, history
 
 # Function to evaluate the model
-def evaluate_model(model, X_test, y_test, lb):
+def evaluate_model(model, X_test, y_test, lb, output_path):
     predictions = model.predict(X_test, batch_size=128)
     report = classification_report(y_test.argmax(axis=1), 
                                     predictions.argmax(axis=1), 
@@ -144,7 +144,7 @@ def evaluate_model(model, X_test, y_test, lb):
     with open(os.path.join(output_path, 'classification_report_with_resnet50.txt'), 'w') as f:
         f.write(report)
 
-def plot_history(H, epochs):
+def plot_history(H, epochs, output_path):
     plt.figure(figsize=(12,6))
     plt.subplot(1,2,1)
     plt.plot(np.arange(0, epochs), H.history["loss"], label="train_loss")
@@ -167,8 +167,14 @@ def plot_history(H, epochs):
 
 # Main function
 def main():
+
+    # Set up output folder
+    epoch_path = os.path.join(output_path, f'{args.epochs} epochs')
+    if not os.path.exists(emissions_path):
+        os.makedirs(emissions_path)
+
     # Set up emissions tracking
-    emissions_path = os.path.join(output_path, 'emissions')
+    emissions_path = os.path.join(epoch_path, 'emissions')
     if not os.path.exists(emissions_path):
         os.makedirs(emissions_path)
 
@@ -217,19 +223,19 @@ def main():
 
     # Plot learning curves
     tracker.start_task('plot history')
-    plot_history(history, args.epochs)
+    plot_history(history, args.epochs, epoch_path)
     tracker.stop_task()
 
     # Evaluate model
     tracker.start_task('evaluate model')
-    evaluate_model(model, X_test, y_test, lb)
+    evaluate_model(model, X_test, y_test, lb, epoch_path)
     tracker.stop_task()
 
     tracker.stop()
 
     # optionally save the model
     if args.save:
-        model.save(os.path.join(output_path, 'grocery_resnet50.keras'))
+        model.save(os.path.join(epoch_path, f'grocerynet50_{args.epochs}epochs.keras'))
 
 if __name__ == '__main__':
     main()
