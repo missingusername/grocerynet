@@ -170,8 +170,8 @@ def main():
 
     # Set up output folder
     epoch_path = os.path.join(output_path, f'{args.epochs} epochs')
-    if not os.path.exists(emissions_path):
-        os.makedirs(emissions_path)
+    if not os.path.exists(epoch_path):
+        os.makedirs(epoch_path)
 
     # Set up emissions tracking
     emissions_path = os.path.join(epoch_path, 'emissions')
