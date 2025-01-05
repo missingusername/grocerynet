@@ -1,6 +1,5 @@
 import os
 import shutil
-import h5py
 import cv2
 import numpy as np
 from tqdm import tqdm
@@ -52,28 +51,13 @@ def create_hdf5(dataset_dir, hdf5_path):
                     label_counter += 1
                 labels.append(label_map[label])
 
-    with h5py.File(hdf5_path, 'w') as hdf5_file:
-        num_images = len(image_paths)
-        first_image = cv2.imread(image_paths[0])
-        image_shape = first_image.shape
-
-        hdf5_file.create_dataset('images', (num_images, *image_shape), dtype=np.uint8)
-        hdf5_file.create_dataset('labels', (num_images,), dtype=np.int)
-
-        for i, (image_path, label) in enumerate(tqdm(zip(image_paths, labels), total=num_images, desc="Creating HDF5 file")):
-            image = cv2.imread(image_path)
-            hdf5_file['images'][i, ...] = image
-            hdf5_file['labels'][i] = label
-
 def main():
     data_path = os.path.join('in', 'GroceryStoreDataset', 'dataset')
     categories = ['train', 'test', 'val']
-    combined_dir = os.path.join('out', 'combined_dataset')
-    hdf5_path = os.path.join('out', 'dataset.hdf5')
+    combined_dir = os.path.join('in', 'combined_dataset')
 
     src_folders = [os.path.join(data_path, category) for category in categories]
     combine_images(src_folders, combined_dir)
-    create_hdf5(combined_dir, hdf5_path)
 
 if __name__ == "__main__":
     main()
