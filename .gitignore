@@ -1,3 +1,8 @@
 /in
-/out
+/out/label_binarizer.pkl
+/out/saved_data.pkl
+/out/test_images
+/out/5 epochs/grocerynet50_5epochs.keras
+/out/10 epochs/grocerynet50_10epochs.keras
+/out/30 epochs/grocerynet50_30epochs.keras
 feedback.csv
