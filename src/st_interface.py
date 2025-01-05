@@ -145,5 +145,5 @@ if st.session_state.evaluation_started:
             })
 
         feedback_df = pd.DataFrame(feedback)
-        feedback_df.to_csv("feedback.csv", mode="a", header=not os.path.exists("feedback.csv"), index=False)
+        feedback_df.to_csv("out/feedback.csv", mode="a", header=not os.path.exists("out/feedback.csv"), index=False)
         st.success("Feedback saved successfully!")
